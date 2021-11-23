@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'audio_screen.dart';
 import 'chat_screen.dart';
 import 'member_screen.dart';
+import 'config.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -14,7 +15,12 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    _screens = [ChatScreen(), AudioScreen(), MemberScreen()];
+    _screens = [
+      ChatScreen(),
+      AudioScreen(),
+      MemberScreen(),
+      Config(),
+    ];
     super.initState();
   }
 
@@ -32,6 +38,8 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.mic_rounded), label: 'AudioTraductor'),
           BottomNavigationBarItem(
               icon: Icon(Icons.accessibility_new_rounded), label: 'Miembros'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Configuracion'),
         ],
         elevation: 0,
         currentIndex: _index,
