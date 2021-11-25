@@ -43,7 +43,7 @@ class _AudioScreenState extends State<AudioScreen> {
         burbujas.add(
           [_text, '...'],
         );
-        //_text = "";
+        _text = "";
       });
     } else {
       // si no hay texto igual hay que refrescar la app
@@ -57,6 +57,7 @@ class _AudioScreenState extends State<AudioScreen> {
     setState(() {
       _text = result.recognizedWords;
     });
+    _stopListening(); // si quito esta linea se bugea en mala XD
   }
 
   @override
