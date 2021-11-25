@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bubble/bubble.dart';
 class Burbuja extends StatefulWidget {
   
   final String TextoEs;
@@ -18,8 +19,19 @@ class _BurbujaState extends State<Burbuja> {
     return(
       Column(
         children: [
-          Text(widget.TextoEs),
-          Text(widget.TextoMa),
+          Bubble(
+            margin: BubbleEdges.only(top: 10),
+            alignment: Alignment.topRight,
+            nip: BubbleNip.rightTop,
+            color: Color.fromRGBO(225, 255, 199, 1.0),
+            child: Text(widget.TextoEs, textAlign: TextAlign.right, style: TextStyle(color: Colors.black)),
+          ),
+          Bubble(
+            margin: BubbleEdges.only(top: 10),
+            alignment: Alignment.topLeft,
+            nip: BubbleNip.leftTop,
+            child: Text(widget.TextoMa, style: TextStyle(color: Colors.black)),
+          ),
         ],
       )
     );
