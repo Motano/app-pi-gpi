@@ -40,6 +40,8 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   bubble: ^1.2.1
+  dash_chat: ^1.1.16
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
