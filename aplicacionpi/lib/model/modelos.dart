@@ -5,9 +5,3 @@ class Message implements Listamensajes {
   final bool isMe;
   Message(this.body, this.isMe);
 }
-
-class RutaApi implements Listamensajes {
-  final String rutaApi;
-
-  RutaApi(this.rutaApi);
-}

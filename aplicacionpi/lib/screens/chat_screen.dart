@@ -1,9 +1,6 @@
-import 'dart:convert';
-
-import 'package:aplicacionpi/models/messages.dart';
+import 'package:aplicacionpi/model/modelos.dart';
 import 'package:aplicacionpi/functions/functions.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class ChatScreen extends StatefulWidget {
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:aplicacionpi/functions/functions.dart';
 
 class Config extends StatefulWidget {
   const Config({Key? key}) : super(key: key);
@@ -18,54 +17,38 @@ class _ConfigState extends State<Config> {
     super.dispose();
   }
 
-  Future<void> asyncInit() async {
-    await Hive.initFlutter();
-
-    var config = await Hive.openBox('config');
-    var ruta = config.get('rutaAPI');
-
-    setState(() {
-      _controllerRuta.text = ruta;
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    asyncInit();
-  }
-
-  Future<void> setRuta(ruta) async {
-    /*
-    setState(() {
-      _controllerRuta.text = ruta;
-    });
-    */
-    var config = await Hive.openBox('config');
-    config.put('rutaAPI', ruta);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Configuracion'),
         ),
-        body: Form(
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Ruta API',
-                      ),
-                      controller: _controllerRuta,
-                      onChanged: (text) {
-                        setRuta(text);
-                      },
-                    )
-                  ],
-                ))));
+        body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            height: 70.0,
+            color: Colors.white,
+            child: Row(children: <Widget>[
+              Expanded(
+                child: TextField(
+                  style: TextStyle(color: Colors.black),
+                  controller: _controllerRuta,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Ingrese la ruta de la Api...',
+                    hintStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.send),
+                iconSize: 25.0,
+                color: Theme.of(context).primaryColor,
+                onPressed: () async {
+                  String ruta = _controllerRuta.text;
+                  setRuta(ruta);
+                },
+              )
+            ])));
   }
 }

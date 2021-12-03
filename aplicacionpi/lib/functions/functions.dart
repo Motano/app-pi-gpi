@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 final myController = TextEditingController();
 
 Future<String> postRequest(String traducir) async {
-  var url = Uri.parse('http://35.222.79.80:5000/api/traductor');
+  var Box = Hive.box('config');
+  String Ruta = Box.get('Ruta');
+  var url = Uri.parse('http://$Ruta/api/traductor');
   Map data = {"spanish": traducir};
   var body = jsonEncode(data);
   var response = await http.post(url,
@@ -17,4 +21,11 @@ Future<String> postRequest(String traducir) async {
       body: body);
 
   return response.body;
+}
+
+Future<void> setRuta(String ruta) async {
+  await Hive.initFlutter();
+  var box = await Hive.openBox('config');
+  var Box = Hive.box('config');
+  Box.put('Ruta', ruta);
 }
