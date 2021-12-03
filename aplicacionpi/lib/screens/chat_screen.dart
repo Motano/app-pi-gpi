@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aplicacionpi/models/messages.dart';
+import 'package:aplicacionpi/functions/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,21 +21,6 @@ class _ChatScreenState extends State<ChatScreen> {
     // Limpia el controlador cuando el Widget se descarte
     myController.dispose();
     super.dispose();
-  }
-
-  Future<String> postRequest(String traducir) async {
-    var url = Uri.parse('http://35.194.43.252:5000/api/traductor');
-    Map data = {"spanish": traducir};
-    var body = jsonEncode(data);
-    var response = await http.post(url,
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "*/*",
-          "Accept-Encoding": "gzip, deflate,br"
-        },
-        body: body);
-
-    return response.body;
   }
 
   _buildMessage(Message message, bool isMe) {
@@ -95,6 +81,7 @@ class _ChatScreenState extends State<ChatScreen> {
               setState(() {
                 _mensajes.insert(0, Message(traducir, true));
                 _mensajes.insert(0, Message(traducidox, false));
+                myController.text = "";
               });
             },
           )

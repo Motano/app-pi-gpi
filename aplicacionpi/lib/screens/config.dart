@@ -9,7 +9,6 @@ class Config extends StatefulWidget {
 }
 
 class _ConfigState extends State<Config> {
-  
   final _controllerRuta = TextEditingController();
 
   @override
@@ -21,10 +20,10 @@ class _ConfigState extends State<Config> {
 
   Future<void> asyncInit() async {
     await Hive.initFlutter();
-    
+
     var config = await Hive.openBox('config');
     var ruta = config.get('rutaAPI');
-    
+
     setState(() {
       _controllerRuta.text = ruta;
     });
@@ -36,20 +35,14 @@ class _ConfigState extends State<Config> {
   }
 
   Future<void> setRuta(ruta) async {
-  
     /*
     setState(() {
       _controllerRuta.text = ruta;
     });
     */
-
-
-
     var config = await Hive.openBox('config');
     config.put('rutaAPI', ruta);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,23 +52,20 @@ class _ConfigState extends State<Config> {
         ),
         body: Form(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Ruta API',
-                    ),
-                    controller: _controllerRuta,
-                    onChanged: (text) {
-                      setRuta(text);
-                    },
-                  )
-                ],
-              )
-            )
-        )
-    );
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: UnderlineInputBorder(),
+                        labelText: 'Ruta API',
+                      ),
+                      controller: _controllerRuta,
+                      onChanged: (text) {
+                        setRuta(text);
+                      },
+                    )
+                  ],
+                ))));
   }
 }

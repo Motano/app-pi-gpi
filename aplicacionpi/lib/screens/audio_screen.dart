@@ -2,9 +2,8 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:bubble/bubble.dart';
-
-import 'burbuja.dart';
+import 'package:aplicacionpi/models/messages.dart';
+import 'package:aplicacionpi/functions/functions.dart';
 
 class AudioScreen extends StatefulWidget {
   const AudioScreen({Key? key}) : super(key: key);
@@ -16,7 +15,11 @@ class _AudioScreenState extends State<AudioScreen> {
   final SpeechToText _speech = SpeechToText();
   bool _speechEnabled = false;
   String _text = '';
-  List<List<String>> burbujas = [];
+  String traducir = "";
+  List<Message> _mensajes = [
+    Message(
+        "Presione el microfono para iniciar el reconocimiento de voz", false),
+  ];
 
   @override
   void initState() {
@@ -31,33 +34,42 @@ class _AudioScreenState extends State<AudioScreen> {
 
   void _startListening() async {
     await _speech.listen(onResult: _onSpeechResult);
-    setState(() {
-    });
+    setState(() {});
   }
 
   void _stopListening() async {
     await _speech.stop();
-    if(_text != ""){
-      setState(() {
-        //aca deberiamos llamar la api antes de crear la burbuja
-        burbujas.add(
-          [_text, '...'],
-        );
-        _text = "";
-      });
-    } else {
-      // si no hay texto igual hay que refrescar la app
-      setState(() {
-        //_text = "";
-      });
-    }
+    setState(() {});
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
     setState(() {
       _text = result.recognizedWords;
     });
-    _stopListening(); // si quito esta linea se bugea en mala XD
+  }
+
+  _buildMessage(Message message, bool isMe) {
+    return Container(
+      margin: isMe
+          ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 80.0)
+          : EdgeInsets.only(top: 8.0, bottom: 8.0, right: 80.0),
+      padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
+      decoration: BoxDecoration(
+          color: isMe ? Theme.of(context).accentColor : Color(0xFFFFEFEE),
+          borderRadius: isMe
+              ? BorderRadius.only(
+                  topLeft: Radius.circular(15.0),
+                  bottomLeft: Radius.circular(15.0),
+                )
+              : BorderRadius.only(
+                  topRight: Radius.circular(15.0),
+                  bottomRight: Radius.circular(15.0),
+                )),
+      child: Text(
+        message.body,
+        style: TextStyle(color: Colors.black),
+      ),
+    );
   }
 
   @override
@@ -66,22 +78,83 @@ class _AudioScreenState extends State<AudioScreen> {
       appBar: AppBar(
         title: const Text('¿Qué desea traducir?'),
       ),
-      body: Center(
-        child: ListView(
-          children: <Widget> [
-            for (var i in burbujas)
-              Burbuja(i[0], i[1])
-            ,
-            if (_speech.isListening)
-              Bubble(
-                margin: BubbleEdges.only(top: 10),
-                alignment: Alignment.topRight,
-                nip: BubbleNip.rightTop,
-                color: Color.fromRGBO(225, 255, 199, 1.0),
-                child: Text(_text, textAlign: TextAlign.right, style: TextStyle(color: Colors.black)),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0),
+                    )),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0),
+                  ),
+                  child: ListView.builder(
+                    reverse: true,
+                    padding: EdgeInsets.only(top: 15.0, bottom: 10),
+                    itemCount: _mensajes.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final Message message = _mensajes[index];
+                      bool isMe = message.isMe;
+                      return _buildMessage(message, isMe);
+                    },
+                  ),
+                ),
               ),
+            ),
+            Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15.0),
+                      topRight: Radius.circular(15.0),
+                      bottomLeft: Radius.circular(15.0),
+                      bottomRight: Radius.circular(15.0),
+                    )),
+                padding: EdgeInsets.only(bottom: 0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _speechEnabled ? '$_text' : 'Speech no está disponible',
+                        style: TextStyle(color: Colors.black),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.send),
+                      iconSize: 25.0,
+                      color: Theme.of(context).primaryColor,
+                      onPressed: () async {
+                        traducir = _text;
+                        String translate = await postRequest(traducir);
+                        List<String> traducido = translate.split(":");
+                        traducido[1] = traducido[1]
+                            .replaceAll("}", "")
+                            .replaceAll('"', "");
+                        String traducidox = traducido[1][0].toUpperCase() +
+                            traducido[1].substring(1);
+                        setState(() {
+                          _mensajes.insert(0, Message(traducir, true));
+                          _mensajes.insert(0, Message(traducidox, false));
+                          _text = "";
+                        });
+                      },
+                    )
+                  ],
+                )),
+            Container(
+              padding: EdgeInsets.only(bottom: 130),
+              color: Colors.black12,
+            ),
           ],
-        )
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AvatarGlow(

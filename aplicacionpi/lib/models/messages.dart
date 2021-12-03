@@ -6,8 +6,8 @@ class Message implements Listamensajes {
   Message(this.body, this.isMe);
 }
 
-class Respuesta implements Listamensajes {
-  final String respuesta;
+class RutaApi implements Listamensajes {
+  final String rutaApi;
 
-  Respuesta(this.respuesta);
+  RutaApi(this.rutaApi);
 }
