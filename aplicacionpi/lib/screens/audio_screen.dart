@@ -4,6 +4,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:aplicacionpi/model/modelos.dart';
 import 'package:aplicacionpi/functions/functions.dart';
+import 'package:aplicacionpi/widgets/mensajes.dart';
 
 class AudioScreen extends StatefulWidget {
   const AudioScreen({Key? key}) : super(key: key);
@@ -16,10 +17,7 @@ class _AudioScreenState extends State<AudioScreen> {
   bool _speechEnabled = false;
   String _text = '';
   String traducir = "";
-  List<Message> _mensajes = [
-    Message(
-        "Presione el microfono para iniciar el reconocimiento de voz", false),
-  ];
+  List<Message> _mensajes = [];
 
   @override
   void initState() {
@@ -53,31 +51,6 @@ class _AudioScreenState extends State<AudioScreen> {
     });
   }
 
-// Constructor de mensajes para mostrar en pantalla las burbujas de texto, separando las que envia el usuario con las que recibe desde la api
-  _buildMessage(Message message, bool isMe) {
-    return Container(
-      margin: isMe
-          ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 80.0)
-          : EdgeInsets.only(top: 8.0, bottom: 8.0, right: 80.0),
-      padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-      decoration: BoxDecoration(
-          color: isMe ? Theme.of(context).accentColor : Color(0xFFFFEFEE),
-          borderRadius: isMe
-              ? BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  bottomLeft: Radius.circular(15.0),
-                )
-              : BorderRadius.only(
-                  topRight: Radius.circular(15.0),
-                  bottomRight: Radius.circular(15.0),
-                )),
-      child: Text(
-        message.body,
-        style: TextStyle(color: Colors.black),
-      ),
-    );
-  }
-
 // Constructor de elementos visuales de la screen de audio
   @override
   Widget build(BuildContext context) {
@@ -102,15 +75,9 @@ class _AudioScreenState extends State<AudioScreen> {
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),
                   ),
-                  child: ListView.builder(
-                    reverse: true,
-                    padding: EdgeInsets.only(top: 15.0, bottom: 10),
-                    itemCount: _mensajes.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final Message message = _mensajes[index];
-                      bool isMe = message.isMe;
-                      return _buildMessage(message, isMe);
-                    },
+                  child: Mensajes(
+                    mensajes: _mensajes,
+                    textoInicial: "Presione el microfono para iniciar el reconocimiento de voz", 
                   ),
                 ),
               ),

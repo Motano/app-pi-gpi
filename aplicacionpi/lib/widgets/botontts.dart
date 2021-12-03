@@ -28,14 +28,14 @@ class _BotonTTSState extends State<BotonTTS> {
   void initState() {
     super.initState();
     _configs();
-    if(widget.autoplay) {
-      _speak(widget.texto);
-    }
   }
 
 
   @override
   Widget build(BuildContext context) {
+    if(widget.autoplay) {
+      _speak(widget.texto);
+    }
     return (
       IconButton(
         icon: const Icon(Icons.play_circle_outline),
