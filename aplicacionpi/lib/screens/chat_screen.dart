@@ -20,6 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
+// Constructor de mensajes para mostrar en pantalla las burbujas de texto, separando las que envia el usuario con las que recibe desde la api
   _buildMessage(Message message, bool isMe) {
     return Container(
       margin: isMe
@@ -44,6 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+// Constructor de barra donde se escribe el mensaje
   _buildMessageComposer() {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -62,6 +64,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           ),
+          // Botón de enviar el cual realiza la petición a la api y el guardado en la lista de mensajes para desplegarlas en la vista como chat
           IconButton(
             icon: Icon(Icons.send),
             iconSize: 25.0,
@@ -85,6 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ]));
   }
 
+// Constructor de elementos visuales del chat screen
   @override
   Widget build(BuildContext context) {
     return Scaffold(

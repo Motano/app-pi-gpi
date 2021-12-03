@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:aplicacionpi/functions/functions.dart';
 
 class Config extends StatefulWidget {
@@ -8,6 +9,7 @@ class Config extends StatefulWidget {
 }
 
 class _ConfigState extends State<Config> {
+  String ruta = 'Ingrese la ruta de la Api...';
   final _controllerRuta = TextEditingController();
 
   @override
@@ -17,6 +19,7 @@ class _ConfigState extends State<Config> {
     super.dispose();
   }
 
+  // Constructor de elementos visuales de la screen config
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +38,7 @@ class _ConfigState extends State<Config> {
                   textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Ingrese la ruta de la Api...',
+                    hintText: ruta,
                     hintStyle: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                 ),
@@ -45,8 +48,9 @@ class _ConfigState extends State<Config> {
                 iconSize: 25.0,
                 color: Theme.of(context).primaryColor,
                 onPressed: () async {
-                  String ruta = _controllerRuta.text;
+                  ruta = _controllerRuta.text;
                   setRuta(ruta);
+                  _controllerRuta.text = "";
                 },
               )
             ])));

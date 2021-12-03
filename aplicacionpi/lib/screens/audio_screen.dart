@@ -27,27 +27,33 @@ class _AudioScreenState extends State<AudioScreen> {
     _initSpeech();
   }
 
+  // Función que evalua la disponibilidad del microfono
+
   void _initSpeech() async {
     _speechEnabled = await _speech.initialize();
     setState(() {});
   }
 
+// Función que indica el inicio del reconocimiento de voz
   void _startListening() async {
     await _speech.listen(onResult: _onSpeechResult);
     setState(() {});
   }
 
+// Función que indica el final del reconocimiento de voz
   void _stopListening() async {
     await _speech.stop();
     setState(() {});
   }
 
+// Función que devuelve en _text las palabras reconocidas por el microfono
   void _onSpeechResult(SpeechRecognitionResult result) {
     setState(() {
       _text = result.recognizedWords;
     });
   }
 
+// Constructor de mensajes para mostrar en pantalla las burbujas de texto, separando las que envia el usuario con las que recibe desde la api
   _buildMessage(Message message, bool isMe) {
     return Container(
       margin: isMe
@@ -72,6 +78,7 @@ class _AudioScreenState extends State<AudioScreen> {
     );
   }
 
+// Constructor de elementos visuales de la screen de audio
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,6 +134,7 @@ class _AudioScreenState extends State<AudioScreen> {
                         textAlign: TextAlign.center,
                       ),
                     ),
+                    // Botón de enviar el cual realiza la petición a la api y el guardado en la lista de mensajes para desplegarlas en la vista como chat
                     IconButton(
                       icon: Icon(Icons.send),
                       iconSize: 25.0,

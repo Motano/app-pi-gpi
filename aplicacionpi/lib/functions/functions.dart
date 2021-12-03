@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 final myController = TextEditingController();
 
+// Función post a la api para obtener la traducción
 Future<String> postRequest(String traducir) async {
   var Box = Hive.box('config');
   String Ruta = Box.get('Ruta');
@@ -22,6 +23,8 @@ Future<String> postRequest(String traducir) async {
 
   return response.body;
 }
+
+// Guardado de la ruta en la BOX creada en Hive
 
 Future<void> setRuta(String ruta) async {
   await Hive.initFlutter();
