@@ -15,13 +15,14 @@ Future<String> postRequest(String traducir) async {
   var body = jsonEncode(data);
   var response = await http.post(url,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json; charset=utf-8",
         "Accept": "*/*",
         "Accept-Encoding": "gzip, deflate,br"
       },
       body: body);
 
-  return response.body;
+  //print(utf8.decode(response.bodyBytes));
+  return utf8.decode(response.bodyBytes);
 }
 
 // Guardado de la ruta en la BOX creada en Hive
