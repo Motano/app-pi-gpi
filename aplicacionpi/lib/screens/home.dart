@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(Icons.mic_rounded), label: 'AudioTraductor'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.accessibility_new_rounded), label: 'Miembros'),
+              icon: Icon(Icons.info_outlined), label: 'Información'),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: 'Configuracion'),
         ],
