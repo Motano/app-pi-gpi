@@ -13,6 +13,8 @@ class BotonTTS extends StatefulWidget {
 
 class _BotonTTSState extends State<BotonTTS> {
 
+  bool _autoplayDone = false;
+
   FlutterTts flutterTts = FlutterTts();
   
   Future _configs() async {
@@ -24,18 +26,31 @@ class _BotonTTSState extends State<BotonTTS> {
     await flutterTts.speak(texto);
   }
 
+  Future<void> _init() async {
+    await _configs();
+    if(widget.autoplay && !(_autoplayDone)) {
+      _speak(widget.texto);
+      _autoplayDone = true;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _configs();
+    _init();
+  }
+
+  @override
+  void didUpdateWidget(BotonTTS oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.autoplay && (widget.texto != oldWidget.texto)) {
+      _speak(widget.texto);
+    }
   }
 
 
   @override
   Widget build(BuildContext context) {
-    if(widget.autoplay) {
-      _speak(widget.texto);
-    }
     return (
       IconButton(
         icon: const Icon(Icons.play_circle_outline),
