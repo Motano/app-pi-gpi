@@ -1,4 +1,4 @@
-# aplicacionpi
+# Aplicacion PI
 
 Aplicacion que realiza traducciones de Español a Mapudungun.
 Es necesario correr el backend encargado de realizar las traducciones, [se puede encontrar en este repositorio](https://github.com/ja-sz97/backend-gpi)
